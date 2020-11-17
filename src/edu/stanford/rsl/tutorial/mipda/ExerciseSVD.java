@@ -61,7 +61,7 @@ public class ExerciseSVD {
 			ExerciseSVD exsvd = new ExerciseSVD();
 			
 			//create the svd of A
-			DecompositionSVD svd = exsvd.createSVD(A); //There are TODO-s here!
+			DecompositionSVD svd = exsvd.createSVD(A); //There are TODO-s here! x
 			
 			//compute the pseudo inverse of A
 			exsvd.pseudoInverse(A);
@@ -72,7 +72,7 @@ public class ExerciseSVD {
 			//diff implies a 0.1% change
 			SimpleVector diff = new SimpleVector(-0.001, 0.001, -0.001);
 			//show the difference between the results
-			exsvd.showDifference(A, b, diff); //There are TODO-s here!
+			exsvd.showDifference(A, b, diff); //There are TODO-s here!		x
 			
 			//compute the condition number of A
 			exsvd.conditionNumber(A);
@@ -80,19 +80,19 @@ public class ExerciseSVD {
 			//calculate the minimal dimension of S of the svd of A
 			int minDim = 0;
 			if (svd != null) {
-				minDim = exsvd.minDim(svd.getS()); //There are TODO-s here!
+				minDim = exsvd.minDim(svd.getS()); //There are TODO-s here!		x
 			}
 			
 			//create a low rank matrix
-			exsvd.lowRankMatrix(A, minDim); //There are TODO-s here!
+			exsvd.lowRankMatrix(A, minDim); //There are TODO-s here!	x
 			
 			//compute matrix closest to A according to the Frobenius norm 
 			//with rank deficiency one and two identical non-zero singular values
 			int svdNewRank = 0;
 			if (svd != null) {
-				svdNewRank = exsvd.newRank(svd.rank(), 1); //There are TODO-s here!
+				svdNewRank = exsvd.newRank(svd.rank(), 1); //There are TODO-s here!		x
 			}
-			exsvd.optimizationProblem1(A, svdNewRank); //There are TODO-s here!
+			exsvd.optimizationProblem1(A, svdNewRank); //There are TODO-s here!		x
 			
 			//estimate the matrix A that minimizes sum_{i=1}^{4} b'_{i} A b_{i}
 			//under the constraint ||A||_{F} = 1
@@ -110,7 +110,7 @@ public class ExerciseSVD {
 			System.out.println("A = " + A.toString());
 			
 			//Compute the SVD of A				
-			DecompositionSVD svd = null; //TODO
+			DecompositionSVD svd = new DecompositionSVD(A); //TODO
 			
 			//Check output: re-compute A = U * S * V^T
 			if (svd != null) {
@@ -123,7 +123,7 @@ public class ExerciseSVD {
 		}
 		
 		public int minDim(SimpleMatrix A) {
-			return 0; //TODO
+			return Math.min(A.getCols(), A.getRows()); //TODO
 		}
 		
 		public SimpleMatrix lowRankMatrix(SimpleMatrix A, int minDim){
@@ -143,7 +143,7 @@ public class ExerciseSVD {
 			}
 				
 			SimpleMatrix templowrank = SimpleOperators.multiplyMatrixProd(svd.getU(), Slowrank);
-			SimpleMatrix Alowrank = null; //TODO
+			SimpleMatrix Alowrank = SimpleOperators.multiplyMatrixProd(templowrank, svd.getV().transposed()); //TODO
 			if (Alowrank != null) {
 				System.out.println("A rank deficient = " + Alowrank.toString());
 			}
@@ -171,18 +171,17 @@ public class ExerciseSVD {
 			//SimpleVector xn = SimpleOperators.multiply(Ainv, bn);
 			
 			// compute and show percentual change
-			SimpleVector xPercentage = null; //TODO
-			//TODO
+			SimpleVector xPercentage = SimpleOperators.divideElementWise(xn, x); //TODO
 			return xPercentage;
 			
 		}
 		
 		public SimpleVector vecDiff(SimpleVector x1, SimpleVector x2) {
-			return null; //TODO
+			return SimpleOperators.subtract(x1, x2); //TODO
 		}
 		
 		public int newRank(int oldRank, int rankDeficiency) {
-			return 0; //TODO
+			return oldRank-rankDeficiency; //TODO
 		}
 		
 		public SimpleMatrix optimizationProblem1(SimpleMatrix A, int svdNewRank)
@@ -231,8 +230,8 @@ public class ExerciseSVD {
 			}
 			
 			//compute A0
-			SimpleMatrix tempA0 = null; //TODO
-			SimpleMatrix A0 = null; //TODO
+			SimpleMatrix tempA0 = SimpleOperators.multiplyMatrixProd(svd.getU(), Slowrank); //TODO
+			SimpleMatrix A0 = SimpleOperators.multiplyMatrixProd(tempA0, svd.getV().transposed()); //TODO
 			
 			if (A0 != null) {
 				System.out.println("A0 = " + A0.toString());
@@ -308,7 +307,7 @@ public class ExerciseSVD {
 				imageRanks.setSubGrid(k, imageRank);
 
 				// evaluate RMSE for the k-th approximation
-				error[k] = calculateRMSE(image,imageRank); //There is a TODO here!
+				error[k] = calculateRMSE(image,imageRank); //There is a TODO here!	x
 			}
 			
 			imageRanks.show("Stack of approximations");
@@ -334,7 +333,7 @@ public class ExerciseSVD {
 		
 		public float calculateRMSE(Grid2D image1, Grid2D image2) {
 			NumericGridOperator op = new NumericGridOperator();
-			float rmse = 0; //TODO
+			float rmse = op.rmse(image1, image2); //TODO
 			return rmse;
 		}
 		
@@ -360,8 +359,8 @@ public class ExerciseSVD {
 			
 			for(int i = 0; i < xCoords.length; i++)//TODO
 			{
-				aCol.setElementValue(i, 0);//TODO
-				y.setElementValue(i, 0);//TODO
+				aCol.setElementValue(i, xCoords[i]);//TODO
+				y.setElementValue(i, yCoords[i]);//TODO
 			}
 			
 			A4.setColValue(0, aCol);
