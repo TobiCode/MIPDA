@@ -278,17 +278,22 @@ public class ExerciseGeoU {
 				
 				int cc = 0;
 				
+				double x_Coord_U = xprime.getPixelValue(i, j);
+				double y_Coord_U = yprime.getPixelValue(i, j);
+
+				
 				for(int k = 0; k <= degree; k++){
 					for(int l = 0; l <= degree - k; l++){
+						double polynom = Math.pow(x_Coord_U, k) * Math.pow(y_Coord_U, l);
 						
+						val1 = (float) (polynom * (u_vec.getElement(cc)));// TODO
+						val2 = (float) (polynom * (v_vec.getElement(cc)));;// TODO
 						
-						val1 = 0;// TODO
-						val2 = 0;// TODO
-						
-						// TODO: fill xDist
-						
+						// TODO: fill xDist or better said add value of polynom1*param1 next loop add polynom2*param2, ...
+						xDist.addAtIndex(i, j, val1);
 						// TODO: fill yDist
-						
+						yDist.addAtIndex(i, j, val2);
+
 						cc++;
 					}
 				}
@@ -301,8 +306,28 @@ public class ExerciseGeoU {
 			for(int j = 0; j < imageHeight; j++){
 				
 				// hint: consider the fact that the coordinate origin is in the center of the image
-				val = 0;//TODO
+				val=0;
+				int xCoordDist = (int) xDist.getAtIndex(i, j);
+				int yCoordDist = (int) yDist.getAtIndex(i, j);
+				
+				//put center at top corner
+				xCoordDist += distortedImage.getWidth()/2;
+				yCoordDist += distortedImage.getHeight()/2;
+				
+				if (xCoordDist > imageWidth || xCoordDist < imageWidth
+						|| yCoordDist > imageHeight || yCoordDist < imageHeight) {
+					System.out.println("XcoordDist: " + xCoordDist);
+					System.out.println("YcoordDist: " + yCoordDist);
+				}
+				else {
+					val = distortedImage.getAtIndex(xCoordDist,yCoordDist);
+					grid_out.setAtIndex(i, j, val);
+				}
+
+				//val = distortedImage.getAtIndex(xCoordDist,yCoordDist);//TODO
 				//TODO: fill grid_out
+				//grid_out.setAtIndex(i, j, val);
+
 			}
 		}
 		
