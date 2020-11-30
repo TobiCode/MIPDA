@@ -144,6 +144,12 @@ public class ExerciseGeoU {
 		// calculate the step size of the lattice points: fx and fy 
 		fx = imageWidth / nx; //TODO
 		fy = imageHeight / ny; //TODO
+		System.out.println("Sampling ImageWidth: " + imageWidth);
+		System.out.println("Sampling ImageHeight: " + imageHeight);
+		
+		System.out.println("Sampling nx: " + nx);
+		System.out.println("Sampling fx: " + fx);
+
 		
 		// fill the distorted and undistorted lattice points 
 		// with data from the given correspondences
@@ -158,15 +164,17 @@ public class ExerciseGeoU {
 
 				// sample the distorted and undistorted grid points at the lattice points
 				//TODO: fill matrix Xu
-				int xCoord = (int) (fx*i);
-				int yCoord = (int) (fy*j);
-				Xu.setElementValue(i, j, xprime.getAtIndex(xCoord, yCoord));
+				int xCoord = (int) (fx*i+fx/2.f);
+				int yCoord = (int) (fy*j+fy/2.f);
+				System.out.println("xCoord Sampling: " + xCoord);
+				System.out.println("yCoord Sampling: " + yCoord);
+				Xu.setElementValue(j, i, xprime.getAtIndex(xCoord, yCoord));
 				//TODO: fill matrix Yu
-				Yu.setElementValue(i, j, yprime.getAtIndex(xCoord, yCoord));
+				Yu.setElementValue(j, i, yprime.getAtIndex(xCoord, yCoord));
 				//TODO: fill matrix Xd
-				Xd.setElementValue(i,j, x.getAtIndex(xCoord,yCoord));
+				Xd.setElementValue(j, i, x.getAtIndex(xCoord,yCoord));
 				//TODO: fill matrix Yd
-				Yd.setElementValue(i, j, y.getAtIndex(xCoord,yCoord));
+				Yd.setElementValue(j, i, y.getAtIndex(xCoord,yCoord));
 			}
 		}
 	}
@@ -311,13 +319,15 @@ public class ExerciseGeoU {
 				int yCoordDist = (int) yDist.getAtIndex(i, j);
 				
 				//put center at top corner
-				xCoordDist += distortedImage.getWidth()/2;
-				yCoordDist += distortedImage.getHeight()/2;
-				
+				//xCoordDist += distortedImage.getWidth()/2;
+				//yCoordDist += distortedImage.getHeight()/2;
+				xCoordDist += distortedImage.getWidth()/2+0.5;
+				yCoordDist += distortedImage.getHeight()/2+0.5;
+
 				if (xCoordDist > imageWidth || xCoordDist < imageWidth
 						|| yCoordDist > imageHeight || yCoordDist < imageHeight) {
-					System.out.println("XcoordDist: " + xCoordDist);
-					System.out.println("YcoordDist: " + yCoordDist);
+					//System.out.println("XcoordDist: " + xCoordDist);
+					//System.out.println("YcoordDist: " + yCoordDist);
 				}
 				else {
 					val = distortedImage.getAtIndex(xCoordDist,yCoordDist);
