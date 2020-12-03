@@ -298,6 +298,7 @@ public class ExerciseGeoU {
 						val2 = (float) (polynom * (v_vec.getElement(cc)));;// TODO
 						
 						// TODO: fill xDist or better said add value of polynom1*param1 next loop add polynom2*param2, ...
+						//xDist, yDist (distorted coordinates 
 						xDist.addAtIndex(i, j, val1);
 						// TODO: fill yDist
 						yDist.addAtIndex(i, j, val2);
@@ -321,8 +322,7 @@ public class ExerciseGeoU {
 				//put center at top corner
 				xCoordDist += distortedImage.getWidth()/2 - 0.5f;
 				yCoordDist += distortedImage.getHeight()/2 - 0.5f;
-
-								
+				
 				val = InterpolationOperators.interpolateLinear(
 						distortedImage,
 						xCoordDist, // remember: coordinate origin was set to image center
