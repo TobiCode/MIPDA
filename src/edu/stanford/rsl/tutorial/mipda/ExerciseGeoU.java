@@ -315,29 +315,25 @@ public class ExerciseGeoU {
 				
 				// hint: consider the fact that the coordinate origin is in the center of the image
 				val=0;
-				int xCoordDist = (int) xDist.getAtIndex(i, j);
-				int yCoordDist = (int) yDist.getAtIndex(i, j);
+				float xCoordDist =  xDist.getAtIndex(i, j);
+				float yCoordDist =  yDist.getAtIndex(i, j);
 				
 				//put center at top corner
-				//xCoordDist += distortedImage.getWidth()/2;
-				//yCoordDist += distortedImage.getHeight()/2;
-				xCoordDist += distortedImage.getWidth()/2+0.5;
-				yCoordDist += distortedImage.getHeight()/2+0.5;
+				xCoordDist += distortedImage.getWidth()/2 - 0.5f;
+				yCoordDist += distortedImage.getHeight()/2 - 0.5f;
 
 				if (xCoordDist > imageWidth || xCoordDist < imageWidth
 						|| yCoordDist > imageHeight || yCoordDist < imageHeight) {
 					//System.out.println("XcoordDist: " + xCoordDist);
 					//System.out.println("YcoordDist: " + yCoordDist);
 				}
-				else {
-					val = distortedImage.getAtIndex(xCoordDist,yCoordDist);
+				else {					
+					val = InterpolationOperators.interpolateLinear(
+							distortedImage,
+							xCoordDist, // remember: coordinate origin was set to image center
+							yCoordDist);
 					grid_out.setAtIndex(i, j, val);
 				}
-
-				//val = distortedImage.getAtIndex(xCoordDist,yCoordDist);//TODO
-				//TODO: fill grid_out
-				//grid_out.setAtIndex(i, j, val);
-
 			}
 		}
 		
